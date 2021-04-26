@@ -3,15 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        *{
+    padding:0;
+    margin :0;
+    box-sizing: border-box;
+    }
+    body{
+        background: rebeccapurple;
+    }
+    header{
+        width:100%;
+        height: 12vh;
+        background: white;
+
+    }
+    nav{
+        margin-left: 10%;
+    }
+    nav ul{
+        display: flex;
+        padding: 40px;
+        justify-content:space-between;
+    }
+    nav ul li{
+    list-style: none;
+    }
+    nav ul li a{
+        text-decoration : none;
+        font-weight: bold;
+        font-size: 2sp;
+    }
+    h1{
+    color:white;
+        text-align:center;
+        margin: 20px;
+    }
+    p{
+    color:white;
+        text-align:center;
+        margin: 20px;
+    }
+    </style>
 </head>
 <body>
-<img src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Person_by_Gyan_Lakhwani_from_the_Noun_Project.png">
-<h2>Welcome Mr. <span th:text="${user.username}"/>'s profile ....</h2>
-<h2>firstName <span th:text="${user.firstName}"/>'s firstName ....</h2>
-<h2>lastName <span th:text="${user.lastName}"/>'s lastName ....</h2>
-<h2>dateOfBirth <span th:text="${user.dateOfBirth}"/>'s dateOfBirth ....</h2>
-<h2>bio <span th:text="${user.bio}"/>'s bio ....</h2>
 
+<header th:insert="header.html :: header"></header>
+<h1><a href="/post">Add Post</a></h1>
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Person_by_Gyan_Lakhwani_from_the_Noun_Project.png">
+<h2>Welcome Mr. [[${user.id}]]'s profile ....</h2>
+<h2>Welcome Mr. [[${user.username}]]'s profile ....</h2>
+<h2>firstName [[${user.firstName}]]'s firstName ....</h2>
+<h2>lastName [[${user.lastName}]]'s lastName ....</h2>
+<h2>dateOfBirth [[${user.dateOfBirth}]]'s dateOfBirth ....</h2>
+<h2>bio [[${user.bio}]]'s bio ....</h2>
+
+<h1>My Posts</h1>
+<div th:each="post:${posts}">
+    <h2>Post Body <span th:text="${post.body}"/></h2>
+    <h2>Date Created  <span th:text="${post.createdAt}"/></h2>
+</div>
 
 </body>
 </html>

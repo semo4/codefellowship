@@ -16,7 +16,7 @@
         width:100%;
         height: 12vh;
         background: white;
-    
+
     }
     nav{
         margin-left: 10%;
@@ -47,14 +47,20 @@
     </style>
 </head>
 <body>
-
 <header th:insert="header.html :: header"></header>
 
-<h1>Welcome to CodeFellowShip</h1>
+<h1><a th:href="${'/post/'+user.id}">Add Post</a></h1>
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Person_by_Gyan_Lakhwani_from_the_Noun_Project.png">
+<h2>Welcome Mr. [[${user.username}]]'s profile ....</h2>
+<h2>firstName [[${user.firstName}]]'s firstName ....</h2>
+<h2>lastName [[${user.lastName}]]'s lastName ....</h2>
+<h2>dateOfBirth [[${user.dateOfBirth}]]'s dateOfBirth ....</h2>
+<h2>bio [[${user.bio}]]'s bio ....</h2>
 
-<p>
-    this web site is to create user information and check if the information is correct
-</p>
-
+<h1>My Posts</h1>
+<div th:each="post:${posts}">
+    <h2>firstName [[${post.body}]]'s firstName ....</h2>
+    <h2>lastName [[${post.createdAt}]]'s lastName ....</h2>
+</div>
 </body>
 </html>
