@@ -10,10 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +47,8 @@ public class ApplicationUserController {
         return "login.html";
     }
 
+
+
     @PostMapping("/signup")
     public RedirectView signup(@RequestParam(value="username") String username,
                                @RequestParam(value="password") String password,
@@ -73,6 +72,7 @@ public class ApplicationUserController {
             m.addAttribute("user", ((UsernamePasswordAuthenticationToken)p).getPrincipal());
             m.addAttribute("posts", posts);
             m.addAttribute("username", p.getName());
+
             return  "profile.html";
         }
         return "error.html";
@@ -92,12 +92,16 @@ public class ApplicationUserController {
 //
     @GetMapping("/profile/{id}")
     public String getProfileById(@PathVariable int id, Principal p , Model m){
-        ApplicationUser user = applicationUserRepository.findByUsername(p.getName());
-        List<PostModel> posts =  postRepository.findPostByUserId(id);
-        m.addAttribute("user", ((UsernamePasswordAuthenticationToken)p).getPrincipal());
-        m.addAttribute("posts", posts);
-        m.addAttribute("username", p.getName());
-        return "profile.html";
+        if(p!= null){
+            ApplicationUser user = applicationUserRepository.findById(id).get();
+            List<PostModel> posts =  postRepository.findPostByUserId(id);
+            m.addAttribute("user", user);
+            m.addAttribute("posts", posts);
+            m.addAttribute("username", p.getName());
+
+            return  "profile.html";
+        }
+        return "error.html";
     }
 
     @GetMapping("/logout")
@@ -109,6 +113,39 @@ public class ApplicationUserController {
         return new RedirectView("/");
     }
 
+    @GetMapping("/edit")
+    public String getEdit(Principal p,Model m){
+        if(p!= null){
+            boolean isAllowedToEdit = true;
+            m.addAttribute("isAllowedToEdit",isAllowedToEdit );
+            m.addAttribute("user", ((UsernamePasswordAuthenticationToken)p).getPrincipal());
+            return "edit.html";
+        }
+        return "error.html";
+    }
+
+    @PutMapping("/edit/{id}")
+    public RedirectView updateProfile(Principal p, @PathVariable int id,@RequestParam(value="username") String username,
+                                @RequestParam(value="firstname") String firstname,
+                                @RequestParam(value="lastname") String lastname,
+                                @RequestParam(value="bio") String bio){
+        ApplicationUser updateUser = applicationUserRepository.findByUsername(p.getName());
+        if(updateUser.getId() == id){
+            updateUser.setUsername(username);
+            updateUser.setFirstName(firstname);
+            updateUser.setLastName(lastname);
+            updateUser.setBio(bio);
+            applicationUserRepository.save(updateUser);
+            return new RedirectView("/profile/"+id);
+        }
+        return new RedirectView("/error");
+
+    }
+
+    @GetMapping("/error")
+    public String getError(){
+        return "error.html";
+    }
 
 
 }

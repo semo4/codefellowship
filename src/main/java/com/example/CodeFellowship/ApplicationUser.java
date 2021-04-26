@@ -22,6 +22,7 @@ public class ApplicationUser implements UserDetails {
     private String dateOfBirth;
     private String bio;
 
+
     @OneToMany(mappedBy = "applicationUser")
     List<PostModel> posts;
 
@@ -90,6 +91,8 @@ public class ApplicationUser implements UserDetails {
     public List<PostModel> getPosts() {
         return this.posts;
     }
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
