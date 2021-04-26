@@ -16,8 +16,6 @@ public class GeneralController {
     public String getHomePage(Principal p, Model m){
         if(p!=null){
             m.addAttribute("username", p.getName());
-        }else{
-            m.addAttribute("username", "");
         }
         return "homepage.html";
     }

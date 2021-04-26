@@ -3,45 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-<style>
-    * {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
+    <style>
+        *{
+    padding:0;
+    margin :0;
+    box-sizing: border-box;
     }
-
-    body {
+    body{
         background: rebeccapurple;
     }
-
-    header {
-        width: 100%;
+    header{
+        width:100%;
         height: 12vh;
         background: white;
 
     }
-
-    nav {
+    nav{
         margin-left: 10%;
     }
-
-    nav ul {
+    nav ul{
         display: flex;
         padding: 40px;
-        justify-content: space-between;
+        justify-content:space-between;
     }
-
-    nav ul li {
-        list-style: none;
+    nav ul li{
+    list-style: none;
     }
-
-    nav ul li a {
-        text-decoration: none;
+    nav ul li a{
+        text-decoration : none;
         font-weight: bold;
         font-size: 2sp;
     }
-
-    form {
+   form {
         width: 80%;
         margin: 20px;
         padding: 20px;
@@ -72,7 +65,7 @@
     }
 
     input[type=submit] {
-        
+
         background: #c79d9d;
         color: white;
         padding: 14px 20px;
@@ -86,24 +79,19 @@
         background: #91c022;
         color: white;
     }
-
-  
-
-  
-</style>
+    </style>
 </head>
-
 <body>
 <header th:insert="header.html :: header"></header>
-<form action="/profile" method='POST'>
+<form action="/post" method='POST'>
     <table>
         <tr>
-            <td>User:</td>
-            <td><input type='text' name='username' value=''></td>
+
+            <td><input type='hidden' name='userid' th:value="${userId}"></td>
         </tr>
         <tr>
-            <td>Password:</td>
-            <td><input type='password' name='password' /></td>
+            <td>Body:</td>
+            <td><input type='text' name='body' /></td>
         </tr>
         <tr>
             <td><input name="submit" type="submit" value="submit" /></td>
