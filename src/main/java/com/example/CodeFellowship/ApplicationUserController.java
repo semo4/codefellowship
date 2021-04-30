@@ -2,6 +2,7 @@ package com.example.CodeFellowship;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -101,13 +102,16 @@ public class ApplicationUserController {
     public String getProfileById(@PathVariable int id, Principal p , Model m){
         if(p!= null){
             ApplicationUser user = applicationUserRepository.findById(id).get();
+            ApplicationUser currentUser = applicationUserRepository.findByUsername(p.getName());
             List<PostModel> posts =  postRepository.findPostByUserId(id);
-            m.addAttribute("user", user);
+            m.addAttribute("prouser", user);
+            m.addAttribute("user", currentUser);
             m.addAttribute("posts", posts);
 //            m.addAttribute("username", p.getName());
+            m.addAttribute("isLoginUser","true");
             m.addAttribute("isLogin","true");
 
-            return  "profile.html";
+            return  "my-profile.html";
         }
         return "error.html";
     }
@@ -154,6 +158,40 @@ public class ApplicationUserController {
     @GetMapping("/error")
     public String getError(){
         return "error.html";
+    }
+
+
+    @GetMapping("/users")
+    public String gatAllUsersPage(Principal p, Model m){
+        if(p!= null){
+            m.addAttribute("user", ((UsernamePasswordAuthenticationToken)p).getPrincipal());
+        }
+        List<ApplicationUser> users = applicationUserRepository.findAll();
+        ApplicationUser currentUser = applicationUserRepository.findByUsername(p.getName());
+        users.remove(currentUser);
+        m.addAttribute("users", users);
+        m.addAttribute("isLogin","true");
+        return "allusers.html";
+    }
+
+    @PostMapping("/follow")
+    public RedirectView addUserIFollow(@Param("id") int id, Principal p){
+        ApplicationUser currentUser = applicationUserRepository.findByUsername(p.getName());
+        ApplicationUser userToFollow = applicationUserRepository.getOne(id);
+        currentUser.addUserToFollow(userToFollow);
+        applicationUserRepository.save(currentUser);
+        return new RedirectView("/feed");
+    }
+
+    @GetMapping("/feed")
+    public String getMyFeedPage(Model m, Principal p){
+        if(p!= null){
+            m.addAttribute("user", ((UsernamePasswordAuthenticationToken)p).getPrincipal());
+        }
+        ApplicationUser currentUser = applicationUserRepository.findByUsername(p.getName());
+        m.addAttribute("currentUser", currentUser);
+        m.addAttribute("isLogin","true");
+        return "feed.html";
     }
 
 

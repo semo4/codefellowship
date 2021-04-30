@@ -2,6 +2,7 @@ package com.example.CodeFellowship;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,9 @@ public class PostController {
     public String postPage(Principal p,  Model m){
         if(p!=null){
             ApplicationUser applicationUser = applicationUserRepository.findByUsername(p.getName());
+            m.addAttribute("user", ((UsernamePasswordAuthenticationToken)p).getPrincipal());
             m.addAttribute("userId", applicationUser.getId());
+            m.addAttribute("isLogin","true");
             return "post.html";
         }
         return "error.html";
