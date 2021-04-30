@@ -37,13 +37,20 @@ public class ApplicationUserController {
 
 
     @GetMapping("/signup")
-    public String getStringPage(){
+    public String getStringPage(Principal p , Model m){
+        if(p!=null){
+            m.addAttribute("isLogin","true");
+            m.addAttribute("user", p.getName());
+            return "homepage.html";
+        }
+        m.addAttribute("isLogin","false");
         return "signup.html";
     }
 
 
     @GetMapping("/login")
-    public String getLogin(){
+    public String getLogin( Model m){
+        m.addAttribute("isLogin","false");
         return "login.html";
     }
 
@@ -71,8 +78,8 @@ public class ApplicationUserController {
             List<PostModel> posts =  postRepository.findPostByUserId(user.getId());
             m.addAttribute("user", ((UsernamePasswordAuthenticationToken)p).getPrincipal());
             m.addAttribute("posts", posts);
-            m.addAttribute("username", p.getName());
-
+//            m.addAttribute("username", p.getName());
+            m.addAttribute("isLogin","true");
             return  "profile.html";
         }
         return "error.html";
@@ -97,7 +104,8 @@ public class ApplicationUserController {
             List<PostModel> posts =  postRepository.findPostByUserId(id);
             m.addAttribute("user", user);
             m.addAttribute("posts", posts);
-            m.addAttribute("username", p.getName());
+//            m.addAttribute("username", p.getName());
+            m.addAttribute("isLogin","true");
 
             return  "profile.html";
         }
@@ -119,6 +127,7 @@ public class ApplicationUserController {
             boolean isAllowedToEdit = true;
             m.addAttribute("isAllowedToEdit",isAllowedToEdit );
             m.addAttribute("user", ((UsernamePasswordAuthenticationToken)p).getPrincipal());
+            m.addAttribute("isLogin","true");
             return "edit.html";
         }
         return "error.html";
