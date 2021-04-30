@@ -44,18 +44,51 @@
         text-align:center;
         margin: 20px;
     }
+
+    .cont{
+        align-items: center;
+        text-align:center;
+        justify-content: center;
+        border: 2px dotted black;
+        margin: 50px;
+    }
+    img{
+        width: 20%;
+        height: 20%;
+        }
+
+    .post{
+        align-items: center;
+        text-align:center;
+        justify-content: center;
+        border: 2px dotted black;
+        margin: 50px;
+        }
+        .add{
+            color:white;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
 <header th:insert="header.html :: header"></header>
 
-<h1><a th:href="${'/post/'+user.id}">Add Post</a></h1>
-<img src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Person_by_Gyan_Lakhwani_from_the_Noun_Project.png">
-<h2>Welcome Mr. [[${user.username}]]'s profile ....</h2>
-<h2>firstName [[${user.firstName}]]'s firstName ....</h2>
-<h2>lastName [[${user.lastName}]]'s lastName ....</h2>
-<h2>dateOfBirth [[${user.dateOfBirth}]]'s dateOfBirth ....</h2>
-<h2>bio [[${user.bio}]]'s bio ....</h2>
+<form th:if="${isLoginUser == 'true'}" th:action="${'/follow?id='+prouser.id}" method="POST">
+    <table>
+        <tr>
+            <td><input type='submit'  value='Follow'></td>
+        </tr>
+    </table>
+</form>
+<div class="cont">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Person_by_Gyan_Lakhwani_from_the_Noun_Project.png">
+
+    <h2>Welcome Mr. [[${prouser.username}]]'s profile ....</h2>
+    <h2>firstName [[${prouser.firstName}]]'s firstName ....</h2>
+    <h2>lastName [[${prouser.lastName}]]'s lastName ....</h2>
+    <h2>dateOfBirth [[${prouser.dateOfBirth}]]'s dateOfBirth ....</h2>
+    <h2>bio [[${prouser.bio}]]'s bio ....</h2>
+</div>
 
 <h1>My Posts</h1>
 <div th:each="post:${posts}">

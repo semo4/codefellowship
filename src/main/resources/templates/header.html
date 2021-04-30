@@ -5,6 +5,8 @@
             <li><a th:if="${isLogin == 'false'}" href="/signup">Sign Up</a></li>
             <li><a th:if="${isLogin == 'false'}" href="/login">Login</a></li>
             <li><a th:if="${isLogin == 'true'}" href="/profile">My Profile</a></li>
+            <li><a th:if="${isLogin == 'true'}" href="/users">All Users</a></li>
+            <li><a th:if="${isLogin == 'true'}" href="/feed">Feed </a></li>
             <li><a th:if="${isLogin == 'true'}" href="/logout">Logout</a></li>
             <li> <span th:if="${isLogin == 'true'}" th:text="'Mr. '+ ${user.username}" /></li>
 
